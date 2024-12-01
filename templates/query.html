@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Query Results</h2>
+<table>
+    <tr>
+        <th>CustomerID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+    </tr>
+    {% for row in rows %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

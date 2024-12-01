@@ -1,0 +1,112 @@
+-- Create Customer table
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(20)
+);
+
+-- Create Vendor table
+CREATE TABLE Vendor (
+    VendorID INT PRIMARY KEY,
+    BusinessName VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    PhoneNumber VARCHAR(20),
+    BusinessAddress TEXT
+);
+
+-- Create Product table
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(100) NOT NULL,
+    Description TEXT,
+    Price DECIMAL(10,2) NOT NULL,
+    StockQuantity INT NOT NULL,
+    VendorID INT,
+    FOREIGN KEY (VendorID) REFERENCES Vendor(VendorID)
+);
+
+-- Create Delivery_Company table (renamed from Delivery_Companies for consistency)
+CREATE TABLE Delivery_Company (
+    DeliveryCompanyID INT PRIMARY KEY,
+    TrackingID VARCHAR(50) NOT NULL,
+    CompanyName VARCHAR(100) NOT NULL,
+    CompanyEmail VARCHAR(100) UNIQUE NOT NULL,
+    CompanyPhoneNumber VARCHAR(20),
+    CompanyWebsite VARCHAR(100)
+);
+
+-- Create Order table
+CREATE TABLE "Order" (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    TotalPrice DECIMAL(10,2) NOT NULL,
+    OrderStatus VARCHAR(20) NOT NULL,
+    OrderDate DATE NOT NULL,
+    DeliveryCompanyID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (DeliveryCompanyID) REFERENCES Delivery_Company(DeliveryCompanyID)
+);
+
+-- Create Order_Items table
+CREATE TABLE Order_Items (
+    OrderID INT,
+    ProductID INT,
+    Quantity INT NOT NULL,
+    PriceAtPurchase DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (OrderID, ProductID),
+    FOREIGN KEY (OrderID) REFERENCES "Order"(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+-- Create Shopping_Cart table
+CREATE TABLE Shopping_Cart (
+    CartID INT PRIMARY KEY,
+    CustomerID INT,
+    TotalItems INT NOT NULL,
+    CreatedDate DATE NOT NULL,
+    TotalPrice DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+-- Create Review table
+CREATE TABLE Review (
+    ReviewID INT PRIMARY KEY,
+    ProductID INT,
+    CustomerID INT,
+    Rating INT NOT NULL CHECK (Rating BETWEEN 1 AND 5),
+    Comment TEXT,
+    ReviewDate DATE NOT NULL,
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+-- Create Address table
+CREATE TABLE Address (
+    AddressID INT PRIMARY KEY,
+    CustomerID INT,
+    StreetAddress VARCHAR(200) NOT NULL,
+    City VARCHAR(100) NOT NULL,
+    State VARCHAR(50) NOT NULL,
+    ZipCode VARCHAR(20) NOT NULL,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+-- Create Payment table
+CREATE TABLE Payment (
+    PaymentID INT PRIMARY KEY,
+    OrderID INT,
+    PaymentMethod VARCHAR(50) NOT NULL,
+    PaymentDate DATE NOT NULL,
+    PaymentAmount DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES "Order"(OrderID)
+);
+
+-- Create Administrator table
+CREATE TABLE Administrator (
+    AdminID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Role VARCHAR(50) NOT NULL
+);

@@ -1,0 +1,103 @@
+-- Create Activity_Log table to log activities
+CREATE TABLE Activity_Log (
+    LogID SERIAL PRIMARY KEY,
+    Action VARCHAR(50),
+    TableName VARCHAR(50),
+    ActionTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trigger to log an entry when a new customer is inserted
+CREATE OR REPLACE FUNCTION log_new_customer() 
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO Activity_Log (Action, TableName)
+    VALUES ('INSERT', 'Customer');
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for INSERT operation on Customer table
+CREATE TRIGGER customer_insert_trigger
+AFTER INSERT ON Customer
+FOR EACH ROW
+EXECUTE FUNCTION log_new_customer();
+
+
+
+
+
+
+
+
+-- Trigger function to prevent deletion of an administrator
+CREATE OR REPLACE FUNCTION prevent_admin_deletion() 
+RETURNS TRIGGER AS $$
+BEGIN
+    RAISE EXCEPTION 'Cannot delete administrator record!';
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for DELETE operation on Administrator table
+CREATE TRIGGER prevent_admin_delete
+BEFORE DELETE ON Administrator
+FOR EACH ROW
+EXECUTE FUNCTION prevent_admin_deletion();
+
+
+
+
+
+
+
+-- Create Update_Log table to track changes
+CREATE TABLE Update_Log (
+    LogID SERIAL PRIMARY KEY,
+    TableName VARCHAR(50),
+    RecordID INT,
+    OldValue VARCHAR(100),
+    NewValue VARCHAR(100),
+    ActionTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trigger function to log phone number changes for customers
+CREATE OR REPLACE FUNCTION log_phone_number_update() 
+RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.PhoneNumber <> NEW.PhoneNumber THEN
+        INSERT INTO Update_Log (TableName, RecordID, OldValue, NewValue)
+        VALUES ('Customer', NEW.CustomerID, OLD.PhoneNumber, NEW.PhoneNumber);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for UPDATE operation on Customer table (PhoneNumber field)
+CREATE TRIGGER customer_phone_update_trigger
+AFTER UPDATE OF PhoneNumber ON Customer
+FOR EACH ROW
+EXECUTE FUNCTION log_phone_number_update();
+
+
+
+
+
+
+-- Create the trigger function to update total items in Shopping_Cart
+CREATE OR REPLACE FUNCTION update_cart_total_items()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Update the total items in the Shopping_Cart for the customer
+    UPDATE Shopping_Cart
+    SET TotalItems = TotalItems + NEW.Quantity
+    WHERE CustomerID = (SELECT CustomerID FROM "Order" WHERE OrderID = NEW.OrderID); -- Use OrderID to find the CustomerID
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create the trigger that will fire after insert into Order_Items
+CREATE TRIGGER update_cart_items_trigger
+AFTER INSERT ON Order_Items
+FOR EACH ROW
+EXECUTE FUNCTION update_cart_total_items();
+

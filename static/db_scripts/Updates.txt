@@ -1,0 +1,65 @@
+-- Updating Customers
+UPDATE Customer SET Email = 'john.new@email.com' WHERE CustomerID = 1;  -- Simple update
+UPDATE Customer SET PhoneNumber = '555-0201' WHERE Name = 'Emma Wilson';  -- Update based on Name
+UPDATE Customer SET Password = 'newHash456pass' WHERE CustomerID = 2;  -- Update password for a specific customer
+UPDATE Customer SET PhoneNumber = '555-0301', Email = 'mike.brown@email.com' WHERE CustomerID = 3;  -- Multiple fields update
+
+-- Updating Vendors
+UPDATE Vendor SET BusinessName = 'Tech Innovations Inc' WHERE VendorID = 1;  -- Simple update
+UPDATE Vendor SET PhoneNumber = '555-1011' WHERE BusinessName = 'Gadget World';  -- Update based on BusinessName
+UPDATE Vendor SET BusinessAddress = '123 New Address, Silicon Valley, CA 94025' WHERE VendorID = 2;  -- Update address
+UPDATE Vendor SET Email = 'newcontact@fashionforward.com', BusinessName = 'Fashion Hub' WHERE VendorID = 3;  -- Multiple fields update
+
+-- Updating Products
+UPDATE Product SET Price = 949.99 WHERE ProductID = 1;  -- Simple update
+UPDATE Product SET StockQuantity = StockQuantity + 20 WHERE ProductName = 'Smart Watch';  -- Increment stock
+UPDATE Product SET Description = 'Latest flagship smartphone with new features' WHERE ProductID = 1;  -- Update description
+UPDATE Product SET Price = 69.99, StockQuantity = StockQuantity - 5 WHERE ProductID = 5;  -- Multiple fields update
+
+-- Updating Delivery Companies
+UPDATE Delivery_Company SET CompanyName = 'FastTrack Delivery' WHERE DeliveryCompanyID = 1;  -- Simple update
+UPDATE Delivery_Company SET CompanyPhoneNumber = '555-2000' WHERE CompanyName = 'Speedy Shipping';  -- Update based on CompanyName
+UPDATE Delivery_Company SET CompanyWebsite = 'www.fasttrackdelivery.com' WHERE DeliveryCompanyID = 1;  -- Update website
+UPDATE Delivery_Company SET CompanyEmail = 'support@fasttrackdelivery.com', CompanyName = 'FastTrack Express' WHERE DeliveryCompanyID = 1;  -- Multiple fields update
+
+-- Updating Orders
+UPDATE "Order" SET OrderStatus = 'completed' WHERE OrderID = 1;  -- Simple update
+UPDATE "Order" SET TotalPrice = TotalPrice + 50 WHERE CustomerID = 2;  -- Update based on CustomerID
+UPDATE "Order" SET DeliveryCompanyID = 3 WHERE OrderID = 5;  -- Change delivery company
+UPDATE "Order" SET TotalPrice = 199.99, OrderStatus = 'returned' WHERE OrderID = 6;  -- Multiple fields update
+
+-- Updating Order Items
+UPDATE Order_Items SET Quantity = 2 WHERE OrderID = 1 AND ProductID = 2;  -- Simple update
+UPDATE Order_Items SET PriceAtPurchase = PriceAtPurchase * 0.9 WHERE OrderID = 2;  -- Apply discount
+UPDATE Order_Items SET Quantity = 0 WHERE OrderID = 3 AND ProductID = 4;  -- Remove an item
+UPDATE Order_Items SET Quantity = Quantity + 1, PriceAtPurchase = PriceAtPurchase + 10 WHERE OrderID = 4 AND ProductID = 5;  -- Multiple fields update
+
+-- Updating Shopping Carts
+UPDATE Shopping_Cart SET TotalItems = TotalItems + 1 WHERE CustomerID = 1;  -- Simple update
+UPDATE Shopping_Cart SET TotalPrice = TotalPrice * 0.95 WHERE CartID = 2;  -- Apply discount
+UPDATE Shopping_Cart SET TotalItems = 0 WHERE CustomerID = 3;  -- Empty the cart
+UPDATE Shopping_Cart SET TotalItems = TotalItems + 2, TotalPrice = TotalPrice + 200 WHERE CartID = 4;  -- Multiple fields update
+
+-- Updating Reviews
+UPDATE Review SET Rating = 3 WHERE ReviewID = 5;  -- Simple update
+UPDATE Review SET Comment = 'Better than expected!' WHERE ReviewID = 6;  -- Update based on ReviewID
+UPDATE Review SET Rating = 5 WHERE ProductID = 2 AND CustomerID = 2;  -- Update based on Product and Customer
+UPDATE Review SET Rating = 4, Comment = 'Very good product, highly recommend!' WHERE ReviewID = 3;  -- Multiple fields update
+
+-- Updating Addresses
+UPDATE Address SET City = 'San Francisco' WHERE AddressID = 1;  -- Simple update
+UPDATE Address SET StreetAddress = '456 New Address' WHERE CustomerID = 2;  -- Update based on CustomerID
+UPDATE Address SET ZipCode = '94101' WHERE AddressID = 3;  -- Update Zip Code
+UPDATE Address SET City = 'Austin', State = 'TX' WHERE AddressID = 4;  -- Multiple fields update
+
+-- Updating Payments
+UPDATE Payment SET PaymentMethod = 'Debit Card' WHERE PaymentID = 1;  -- Simple update
+UPDATE Payment SET PaymentAmount = PaymentAmount + 10 WHERE OrderID = 2;  -- Increase amount
+UPDATE Payment SET PaymentDate = '2024-01-25' WHERE PaymentID = 3;  -- Change payment date
+UPDATE Payment SET PaymentAmount = 50, PaymentMethod = 'Credit Card' WHERE PaymentID = 4;  -- Multiple fields update
+
+-- Updating Administrators
+UPDATE Administrator SET Name = 'New Admin' WHERE AdminID = 1;  -- Simple update
+UPDATE Administrator SET Email = 'admin2@example.com' WHERE AdminID = 2;  -- Update email
+UPDATE Administrator SET Role = 'Senior Admin' WHERE AdminID = 1;  -- Update based on AdminID
+UPDATE Administrator SET Name = 'Super Admin', Email = 'superadmin@example.com' WHERE AdminID = 3;  -- Multiple fields update

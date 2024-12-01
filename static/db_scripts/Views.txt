@@ -1,0 +1,57 @@
+-- View to show total sales by customer
+CREATE OR REPLACE VIEW total_sales_by_customer AS
+SELECT 
+    c.CustomerID,
+    c.Name,
+    SUM(o.TotalPrice) AS TotalSpent
+FROM 
+    Customer c
+JOIN 
+    "Order" o ON c.CustomerID = o.CustomerID
+GROUP BY 
+    c.CustomerID, c.Name;
+
+
+-- View to show products with the highest sales
+CREATE OR REPLACE VIEW top_selling_products AS
+SELECT 
+    p.ProductID,
+    p.ProductName,
+    SUM(oi.Quantity) AS TotalQuantitySold,
+    SUM(oi.Quantity * oi.PriceAtPurchase) AS TotalSales
+FROM 
+    Product p
+JOIN 
+    "Order" o ON o.OrderID IN (SELECT OrderID FROM Order_Items WHERE ProductID = p.ProductID)
+JOIN 
+    Order_Items oi ON p.ProductID = oi.ProductID
+GROUP BY 
+    p.ProductID, p.ProductName
+ORDER BY 
+    TotalSales DESC;
+
+
+
+
+-- View to show customers with no orders
+CREATE OR REPLACE VIEW customers_no_orders AS
+SELECT 
+    c.CustomerID,
+    c.Name
+FROM 
+    Customer c
+LEFT JOIN 
+    "Order" o ON c.CustomerID = o.CustomerID
+WHERE 
+    o.OrderID IS NULL;
+
+
+-- Updatable view showing customer contact details
+CREATE OR REPLACE VIEW customer_contact_info AS
+SELECT 
+    CustomerID,
+    Name,
+    Email,
+    PhoneNumber
+FROM 
+    Customer;

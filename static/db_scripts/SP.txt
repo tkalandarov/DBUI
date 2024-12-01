@@ -1,0 +1,78 @@
+CREATE OR REPLACE FUNCTION AddToCart(
+    p_CartID INT,
+    p_ProductID INT,
+    p_Quantity INT
+) RETURNS VOID AS $$
+DECLARE
+    currentStock INT;
+    productPrice NUMERIC(10,2);
+BEGIN
+    -- Check stock availability
+    SELECT StockQuantity, Price
+    INTO currentStock, productPrice
+    FROM Product
+    WHERE ProductID = p_ProductID;
+
+    IF currentStock < p_Quantity THEN
+        RAISE EXCEPTION 'Insufficient stock';
+    ELSE
+        -- Deduct stock from Product table
+        UPDATE Product
+        SET StockQuantity = StockQuantity - p_Quantity
+        WHERE ProductID = p_ProductID;
+
+        -- Update Shopping Cart total
+        UPDATE Shopping_Cart
+        SET TotalItems = TotalItems + p_Quantity,
+            TotalPrice = TotalPrice + (productPrice * p_Quantity)
+        WHERE CartID = p_CartID;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+-- Modify the stored procedure to manually handle customerid
+CREATE OR REPLACE FUNCTION add_customer(
+    p_customerid INT,
+    p_name VARCHAR, 
+    p_email VARCHAR, 
+    p_password VARCHAR, 
+    p_phone_number VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO Customer (CustomerID, Name, Email, Password, PhoneNumber)
+    VALUES (p_customerid, p_name, p_email, p_password, p_phone_number);
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Stored Procedure to Update Customer Info
+CREATE OR REPLACE FUNCTION update_customer(
+    p_customerid INT, 
+    p_name VARCHAR, 
+    p_email VARCHAR, 
+    p_password VARCHAR, 
+    p_phone_number VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE Customer
+    SET Name = p_name, Email = p_email, Password = p_password, PhoneNumber = p_phone_number
+    WHERE CustomerID = p_customerid;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+-- Stored Procedure to Delete Customer
+CREATE OR REPLACE FUNCTION delete_customer(
+    p_customerid INT
+) RETURNS VOID AS $$
+BEGIN
+    DELETE FROM Customer
+    WHERE CustomerID = p_customerid;
+END;
+$$ LANGUAGE plpgsql;
+

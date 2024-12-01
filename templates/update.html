@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Update Data</h2>
+<form method="post">
+    <label>Table Name:</label><input type="text" name="table" required><br>
+    <label>Set Clause:</label><input type="text" name="set_clause" required><br>
+    <label>Where Clause:</label><input type="text" name="where_clause" required><br>
+    <button type="submit">Update</button>
+</form>
+{% endblock %}

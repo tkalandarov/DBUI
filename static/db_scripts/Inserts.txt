@@ -1,0 +1,142 @@
+-- First, create Customers (referenced by Orders and other tables)
+INSERT INTO Customer (CustomerID, Name, Email, Password, PhoneNumber) VALUES
+(1, 'John Smith', 'john.smith@email.com', 'hash123pass', '555-0101'),
+(2, 'Emma Wilson', 'emma.w@email.com', 'hash456pass', '555-0102'),
+(3, 'Michael Brown', 'michael.b@email.com', 'hash789pass', '555-0103'),
+(4, 'Sarah Davis', 'sarah.d@email.com', 'hash321pass', '555-0104'),
+(5, 'James Johnson', 'james.j@email.com', 'hash654pass', '555-0105'),
+(6, 'Lisa Anderson', 'lisa.a@email.com', 'hash987pass', '555-0106'),
+(7, 'Robert Martin', 'robert.m@email.com', 'hashabbpass', '555-0107'),
+(8, 'Patricia White', 'patricia.w@email.com', 'hashcddpass', '555-0108'),
+(9, 'David Miller', 'david.m@email.com', 'hasheefpass', '555-0109'),
+(10, 'Jennifer Lee', 'jennifer.l@email.com', 'hashggpass', '555-0110');
+
+-- Then create Vendors (referenced by Products)
+INSERT INTO Vendor (VendorID, BusinessName, Email, PhoneNumber, BusinessAddress) VALUES
+(1, 'Tech Solutions Inc', 'sales@techsolutions.com', '555-1001', '123 Tech Street, Silicon Valley, CA 94025'),
+(2, 'Gadget World', 'info@gadgetworld.com', '555-1002', '456 Electronics Ave, New York, NY 10001'),
+(3, 'Fashion Forward', 'contact@fashionforward.com', '555-1003', '789 Style Road, Los Angeles, CA 90001'),
+(4, 'Home Essentials', 'sales@homeessentials.com', '555-1004', '321 Home Blvd, Chicago, IL 60601'),
+(5, 'Sports Elite', 'info@sportselite.com', '555-1005', '654 Athletics Way, Boston, MA 02108'),
+(6, 'Beauty Basics', 'contact@beautybasics.com', '555-1006', '987 Glamour Street, Miami, FL 33101'),
+(7, 'Pet Paradise', 'sales@petparadise.com', '555-1007', '147 Paw Avenue, Seattle, WA 98101'),
+(8, 'Kitchen Kings', 'info@kitchenkings.com', '555-1008', '258 Culinary Lane, Austin, TX 78701'),
+(9, 'Garden Gurus', 'contact@gardengurus.com', '555-1009', '369 Green Road, Portland, OR 97201'),
+(10, 'Book Haven', 'sales@bookhaven.com', '555-1010', '741 Literary Lane, Denver, CO 80201');
+
+-- Create Products (referenced by Order_Items)
+INSERT INTO Product (ProductID, ProductName, Description, Price, StockQuantity, VendorID) VALUES
+(1, 'Smartphone X', 'Latest flagship smartphone', 999.99, 50, 1),
+(2, 'Laptop Pro', 'Professional grade laptop', 1499.99, 30, 1),
+(3, 'Designer Jeans', 'Premium denim jeans', 89.99, 100, 3),
+(4, 'Smart Watch', 'Fitness tracking smartwatch', 199.99, 75, 2),
+(5, 'Coffee Maker', 'Automatic drip coffee maker', 79.99, 60, 8),
+(6, 'Tennis Racket', 'Professional tennis racket', 159.99, 40, 5),
+(7, 'Face Cream', 'Anti-aging face cream', 49.99, 150, 6),
+(8, 'Dog Bed', 'Large comfortable dog bed', 69.99, 45, 7),
+(9, 'Garden Tools Set', 'Complete gardening toolkit', 129.99, 35, 9),
+(10, 'Best Seller Book', 'Popular fiction novel', 24.99, 200, 10);
+
+-- Create Delivery Companies (corrected table name)
+INSERT INTO Delivery_Company (DeliveryCompanyID, TrackingID, CompanyName, CompanyEmail, CompanyPhoneNumber, CompanyWebsite) VALUES
+(1, 'FED100', 'FastExpress Delivery', 'contact@fastexpress.com', '555-2001', 'www.fastexpress.com'),
+(2, 'SPD200', 'Speedy Shipping', 'info@speedyshipping.com', '555-2002', 'www.speedyshipping.com'),
+(3, 'QCR300', 'Quick Carriers', 'support@quickcarriers.com', '555-2003', 'www.quickcarriers.com'),
+(4, 'RSH400', 'Rush Delivery', 'help@rushdelivery.com', '555-2004', 'www.rushdelivery.com'),
+(5, 'SEC500', 'Secure Transport', 'info@securetransport.com', '555-2005', 'www.securetransport.com'),
+(6, 'PRE600', 'Premium Logistics', 'contact@premiumlogistics.com', '555-2006', 'www.premiumlogistics.com'),
+(7, 'EXP700', 'Express Connect', 'support@expressconnect.com', '555-2007', 'www.expressconnect.com'),
+(8, 'GLB800', 'Global Shippers', 'info@globalshippers.com', '555-2008', 'www.globalshippers.com'),
+(9, 'LOC900', 'Local Express', 'help@localexpress.com', '555-2009', 'www.localexpress.com'),
+(10, 'INT000', 'International Cargo', 'contact@intcargo.com', '555-2010', 'www.intcargo.com');
+
+-- Create Orders
+INSERT INTO "Order" (OrderID, CustomerID, TotalPrice, OrderStatus, OrderDate, DeliveryCompanyID) VALUES
+(1, 1, 1499.99, 'delivered', '2024-01-15', 1),
+(2, 2, 289.98, 'shipped', '2024-01-20', 2),
+(3, 3, 199.99, 'pending', '2024-02-01', 3),
+(4, 4, 129.99, 'delivered', '2024-02-05', 1),
+(5, 5, 449.97, 'shipped', '2024-02-10', 4),
+(6, 6, 89.99, 'canceled', '2024-02-15', 5),
+(7, 7, 299.98, 'delivered', '2024-02-20', 6),
+(8, 8, 179.98, 'shipped', '2024-02-25', 7),
+(9, 9, 249.99, 'pending', '2024-03-01', 8),
+(10, 10, 399.96, 'delivered', '2024-03-05', 9);
+
+-- Create Order Items
+INSERT INTO Order_Items (OrderID, ProductID, Quantity, PriceAtPurchase) VALUES
+(1, 2, 1, 1499.99),
+(2, 3, 2, 89.99),
+(3, 4, 1, 199.99),
+(4, 5, 1, 129.99),
+(5, 1, 3, 149.99),
+(6, 3, 1, 89.99),
+(7, 6, 2, 149.99),
+(8, 7, 2, 89.99),
+(9, 8, 1, 249.99),
+(10, 9, 4, 99.99);
+
+-- Create Shopping Carts
+INSERT INTO Shopping_Cart (CartID, CustomerID, TotalItems, CreatedDate, TotalPrice) VALUES
+(1, 1, 2, '2024-03-01', 199.98),
+(2, 2, 1, '2024-03-02', 999.99),
+(3, 3, 3, '2024-03-03', 269.97),
+(4, 4, 2, '2024-03-04', 159.98),
+(5, 5, 1, '2024-03-05', 79.99),
+(6, 6, 4, '2024-03-06', 399.96),
+(7, 7, 2, '2024-03-07', 299.98),
+(8, 8, 1, '2024-03-08', 159.99),
+(9, 9, 3, '2024-03-09', 209.97),
+(10, 10, 2, '2024-03-10', 149.98);
+
+-- Create Reviews
+INSERT INTO Review (ReviewID, ProductID, CustomerID, Rating, Comment, ReviewDate) VALUES
+(1, 1, 1, 5, 'Excellent smartphone, worth every penny!', '2024-02-01'),
+(2, 2, 2, 4, 'Great laptop for professional use', '2024-02-05'),
+(3, 3, 3, 5, 'Perfect fit and great quality', '2024-02-10'),
+(4, 4, 4, 4, 'Good fitness tracking features', '2024-02-15'),
+(5, 5, 5, 3, 'Decent coffee maker, but a bit noisy', '2024-02-20'),
+(6, 6, 6, 5, 'Professional quality tennis racket', '2024-02-25'),
+(7, 7, 7, 4, 'Visible results after few weeks', '2024-03-01'),
+(8, 8, 8, 5, 'My dog loves this bed!', '2024-03-05'),
+(9, 9, 9, 4, 'Complete set for all gardening needs', '2024-03-10'),
+(10, 10, 10, 5, 'Couldnt put this book down!', '2024-03-15');
+
+-- Create Addresses
+INSERT INTO Address (AddressID, CustomerID, StreetAddress, City, State, ZipCode) VALUES
+(1, 1, '123 Main St', 'Los Angeles', 'CA', '90001'),
+(2, 2, '456 Oak Ave', 'New York', 'NY', '10001'),
+(3, 3, '789 Pine Rd', 'Chicago', 'IL', '60601'),
+(4, 4, '321 Maple Dr', 'Houston', 'TX', '77001'),
+(5, 5, '654 Cedar Ln', 'Phoenix', 'AZ', '85001'),
+(6, 6, '987 Birch St', 'Philadelphia', 'PA', '19101'),
+(7, 7, '147 Elm Ave', 'San Antonio', 'TX', '78201'),
+(8, 8, '258 Spruce Rd', 'San Diego', 'CA', '92101'),
+(9, 9, '369 Willow Dr', 'Dallas', 'TX', '75201'),
+(10, 10, '741 Ash St', 'San Jose', 'CA', '95101');
+
+-- Create Payments
+INSERT INTO Payment (PaymentID, OrderID, PaymentMethod, PaymentDate, PaymentAmount) VALUES
+(1, 1, 'Credit Card', '2024-01-15', 1499.99),
+(2, 2, 'PayPal', '2024-01-20', 289.98),
+(3, 3, 'Debit Card', '2024-02-01', 199.99),
+(4, 4, 'Credit Card', '2024-02-05', 129.99),
+(5, 5, 'Bank Transfer', '2024-02-10', 449.97),
+(6, 6, 'PayPal', '2024-02-15', 89.99),
+(7, 7, 'Credit Card', '2024-02-20', 299.98),
+(8, 8, 'Debit Card', '2024-02-25', 179.98),
+(9, 9, 'PayPal', '2024-03-01', 249.99),
+(10, 10, 'Credit Card', '2024-03-05', 399.96);
+
+-- Create Administrators
+INSERT INTO Administrator (AdminID, Name, Email, Role) VALUES
+(1, 'Admin Smith', 'admin.smith@company.com', 'admin'),
+(2, 'Manager Johnson', 'manager.johnson@company.com', 'manager'),
+(3, 'Support Wilson', 'support.wilson@company.com', 'support'),
+(4, 'Admin Davis', 'admin.davis@company.com', 'admin'),
+(5, 'Manager Brown', 'manager.brown@company.com', 'manager'),
+(6, 'Support Taylor', 'support.taylor@company.com', 'support'),
+(7, 'Admin Martinez', 'admin.martinez@company.com', 'admin'),
+(8, 'Manager Anderson', 'manager.anderson@company.com', 'manager'),
+(9, 'Support Thomas', 'support.thomas@company.com', 'support'),
+(10, 'Admin Jackson', 'admin.jackson@company.com', 'admin');
