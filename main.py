@@ -67,26 +67,66 @@ def delete():
     return render_template('delete.html')
 
 # Query Screen
-@app.route('/query')
+@app.route('/query', methods=['GET'])
 def query():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM Customer")  # Example: Fetch all customers
-    rows = cur.fetchall()
+
+    # List of all tables
+    tables = [
+        "customer", "vendor", "product", "delivery_company",
+        "Order", "order_items", "shopping_cart", "review",
+        "address", "payment", "administrator"
+    ]
+
+    selected_table = request.args.get('table')  # Get the selected table from the query parameters
+    data = None
+
+    if selected_table:
+        try:
+            cur.execute(f'SELECT * FROM "{selected_table}"')
+            rows = cur.fetchall()
+            columns = [desc[0] for desc in cur.description]
+            data = {"columns": columns, "rows": rows}
+        except Exception as e:
+            print(f"Error fetching data for table {selected_table}: {e}")
+
     cur.close()
     conn.close()
-    return render_template('query.html', rows=rows)
 
-# Report Screen
-@app.route('/report')
+    return render_template('query.html', tables=tables, selected_table=selected_table, data=data)
+
+@app.route('/report', methods=['GET'])
 def report():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM total_sales_by_customer")  # Using view
-    rows = cur.fetchall()
+
+    # List of available views
+    views = {
+        "total_sales_by_customer": "Total Sales by Customer",
+        "top_selling_products": "Top Selling Products",
+        "customers_no_orders": "Customers with No Orders",
+        "customer_contact_info": "Customer Contact Info"
+    }
+
+    selected_view = request.args.get('view')  # Get the selected view from the query parameters
+    view_data = None
+    view_name = views.get(selected_view)
+
+    if selected_view:
+        try:
+            cur.execute(f'SELECT * FROM {selected_view}')
+            rows = cur.fetchall()
+            columns = [desc[0] for desc in cur.description]
+            view_data = {"columns": columns, "rows": rows}
+        except Exception as e:
+            print(f"Error fetching data for view {selected_view}: {e}")
+
     cur.close()
     conn.close()
-    return render_template('report.html', rows=rows)
+
+    return render_template('report.html', views=views, selected_view=selected_view, view_name=view_name, view_data=view_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

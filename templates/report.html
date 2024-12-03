@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Reports</h2>
+
+<form method="get" action="/report">
+    <label for="view">Select Report:</label>
+    <select id="view" name="view" required>
+        <option value="" disabled selected>Select a report</option>
+        <option value="total_sales_by_customer">Total Sales by Customer</option>
+        <option value="top_selling_products">Top Selling Products</option>
+        <option value="customers_no_orders">Customers with No Orders</option>
+        <option value="customer_contact_info">Customer Contact Info</option>
+    </select>
+    <button type="submit">View Report</button>
+</form>
+
+<br>
+
+{% if view_data %}
+    <h3>Report: {{ view_name }}</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for column in view_data.columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in view_data.rows %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% elif view_name %}
+    <p>No data found for the selected report.</p>
+{% else %}
+    <p>Please select a report to view the data.</p>
+{% endif %}
+
+{% endblock %}

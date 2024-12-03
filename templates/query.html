@@ -1,20 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Query Results</h2>
-<table>
-    <tr>
-        <th>CustomerID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-    </tr>
-    {% for row in rows %}
-    <tr>
-        <td>{{ row[0] }}</td>
-        <td>{{ row[1] }}</td>
-        <td>{{ row[2] }}</td>
-        <td>{{ row[3] }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<h2>Query Data</h2>
+
+<form method="get" action="/report">
+    <label for="table">Select Table:</label>
+    <select id="table" name="table">
+        <option value="" disabled selected>Select a table</option>
+        {% for table in tables %}
+        <option value="{{ table }}" {% if table == selected_table %}selected{% endif %}>{{ table }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">View Report</button>
+</form>
+
+<br>
+
+{% if selected_table %}
+    <h3>Report for {{ selected_table }}</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for column in data.columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data.rows %}
+                <tr>
+                    {% for cell in row %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Please select a table to view its contents.</p>
+{% endif %}
+
+{% if not data %}
+    <p>No data available to display.</p>
+{% endif %}
+
 {% endblock %}
