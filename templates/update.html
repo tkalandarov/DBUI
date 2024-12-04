@@ -1,10 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Update Data</h2>
-<form method="post">
-    <label>Table Name:</label><input type="text" name="table" required><br>
-    <label>Set Clause:</label><input type="text" name="set_clause" required><br>
-    <label>Where Clause:</label><input type="text" name="where_clause" required><br>
-    <button type="submit">Update</button>
-</form>
+<div class="max-w-md mx-auto">
+    <div class="card">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Update Data</h2>
+        <form method="post" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Table Name</label>
+                <input type="text" name="table" required class="form-input">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Set Clause</label>
+                <input type="text" name="set_clause" required class="form-input">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Where Clause</label>
+                <input type="text" name="where_clause" required class="form-input">
+            </div>
+            
+            <button type="submit" class="w-full btn-primary bg-yellow-500 hover:bg-yellow-600">
+                Update
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}

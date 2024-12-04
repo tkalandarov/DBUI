@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Delete Data</h2>
-<form method="post">
-    <label>Table Name:</label><input type="text" name="table" required><br>
-    <label>Where Clause:</label><input type="text" name="where_clause" required><br>
-    <button type="submit">Delete</button>
-</form>
+<div class="max-w-md mx-auto">
+    <div class="card">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Delete Data</h2>
+        <form method="post" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Table Name</label>
+                <input type="text" name="table" required class="form-input">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Where Clause</label>
+                <input type="text" name="where_clause" required class="form-input">
+            </div>
+            
+            <button type="submit" class="w-full btn-primary bg-red-500 hover:bg-red-600">
+                Delete
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}

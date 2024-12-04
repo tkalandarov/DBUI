@@ -1,10 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Insert Data</h2>
-<form method="post">
-    <label>Table Name:</label><input type="text" name="table" required><br>
-    <label>Columns (comma-separated):</label><input type="text" name="columns" required><br>
-    <label>Values (comma-separated):</label><input type="text" name="values" required><br>
-    <button type="submit">Insert</button>
-</form>
+<div class="max-w-md mx-auto">
+    <div class="card">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Insert Data</h2>
+        <form method="post" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Table Name</label>
+                <input type="text" name="table" required class="form-input">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Columns (comma-separated)</label>
+                <input type="text" name="columns" required class="form-input">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Values (comma-separated)</label>
+                <input type="text" name="values" required class="form-input">
+            </div>
+            
+            <button type="submit" class="w-full btn-primary bg-green-500 hover:bg-green-600">
+                Insert
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}
